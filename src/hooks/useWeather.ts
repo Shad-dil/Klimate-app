@@ -9,30 +9,27 @@ export const WEATHER_KEY = {
 } as const;
 
 export function useForecastQuery(coordinates: Coordinates) {
-  const { data, error, isLoading } = useQuery({
+  return useQuery({
     queryKey: WEATHER_KEY.forecast(coordinates ?? { lat: 0, lon: 0 }),
     queryFn: () => (coordinates ? weatherAPI.getForecast(coordinates) : null),
     enabled: !!coordinates,
   });
-  return { data, isLoading, error };
 }
 
 export function useWeatherQuery(coordinates: Coordinates) {
-  const { data, error, isLoading } = useQuery({
+  return useQuery({
     queryKey: WEATHER_KEY.weather(coordinates ?? { lat: 0, lon: 0 }),
     queryFn: () =>
       coordinates ? weatherAPI.getCurrentWeather(coordinates) : null,
     enabled: !!coordinates,
   });
-  return { data, isLoading, error };
 }
 
 export function useReverseGeoQuery(coordinates: Coordinates) {
-  const { data, error, isLoading } = useQuery({
+  return useQuery({
     queryKey: WEATHER_KEY.location(coordinates ?? { lat: 0, lon: 0 }),
     queryFn: () =>
       coordinates ? weatherAPI.reverseGeocode(coordinates) : null,
     enabled: !!coordinates,
   });
-  return { data, isLoading, error };
 }
