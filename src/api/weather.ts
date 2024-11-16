@@ -20,10 +20,11 @@ class WeatherAPI {
     const response = await fetch(url);
     if (!response.ok)
       throw new Error(`Weather API Error ${response.statusText}`);
+
     return response.json();
   }
   async getCurrentWeather({ lat, lon }: Coordinates): Promise<WeatherData> {
-    const url = this.createUrl(`${API_CONFIG.BASE_URL}/forecast`, {
+    const url = this.createUrl(`${API_CONFIG.BASE_URL}/weather`, {
       lat: lat.toString(),
       lon: lon.toString(),
       units: API_CONFIG.DEFAULT_PARAMS.units,
@@ -32,7 +33,7 @@ class WeatherAPI {
   }
 
   async getForecast({ lat, lon }: Coordinates): Promise<ForecastData> {
-    const url = this.createUrl(`${API_CONFIG.GEO}/reverse`, {
+    const url = this.createUrl(`${API_CONFIG.BASE_URL}/forecast`, {
       lat: lat.toString(),
       lon: lon.toString(),
       limit: 1,
@@ -41,7 +42,7 @@ class WeatherAPI {
   }
 
   async reverseGeocode({ lat, lon }: Coordinates): Promise<GeocodeResponse[]> {
-    const url = this.createUrl(`${API_CONFIG.BASE_URL}/forecast`, {
+    const url = this.createUrl(`${API_CONFIG.GEO}/reverse`, {
       lat: lat.toString(),
       lon: lon.toString(),
       units: API_CONFIG.DEFAULT_PARAMS.units,

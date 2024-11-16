@@ -1,3 +1,4 @@
+import CurrentWeather from "@/components/CurrentWeather";
 import WeatherSkeleton from "@/components/loading-skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,7 @@ const WeatherDashboard = () => {
   const weatherQuery = useWeatherQuery(coordinates);
   const forecastQuery = useForecastQuery(coordinates);
   const locationQuery = useReverseGeoQuery(coordinates);
+
   const handleRefresh = () => {
     getLocation();
     if (coordinates) {
@@ -64,6 +66,7 @@ const WeatherDashboard = () => {
   }
 
   const locationName = locationQuery.data?.[0];
+
   if (weatherQuery.error || forecastQuery.error) {
     return (
       <Alert variant={"destructive"}>
@@ -100,6 +103,18 @@ const WeatherDashboard = () => {
               }`}
             />
           </Button>
+        </div>
+        <div className="grid gap-6">
+          <div>
+            {
+              /* hourly temp  */
+              <CurrentWeather
+                data={weatherQuery.data}
+                locationName={locationName}
+              />
+            }
+          </div>
+          <div>{/* current weather  */}</div>
         </div>
       </div>
     </>

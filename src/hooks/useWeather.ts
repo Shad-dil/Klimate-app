@@ -3,9 +3,9 @@ import { weatherAPI } from "@/api/weather";
 import { useQuery } from "@tanstack/react-query";
 
 export const WEATHER_KEY = {
-  weather: (coords: Coordinates) => ["weather", coords],
-  forecast: (coords: Coordinates) => ["forecast", coords],
-  location: (coords: Coordinates) => ["location", coords],
+  weather: (coords: Coordinates) => ["weather", coords] as const,
+  forecast: (coords: Coordinates) => ["forecast", coords] as const,
+  location: (coords: Coordinates) => ["location", coords] as const,
 } as const;
 
 export function useForecastQuery(coordinates: Coordinates) {
