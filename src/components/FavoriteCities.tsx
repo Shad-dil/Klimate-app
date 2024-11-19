@@ -78,7 +78,7 @@ function FavoriteCityTablet({
         </div>
       ) : weather ? (
         <>
-          <div>
+          <div className="flex items-center gap-2">
             <img
               src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}
               alt={weather.weather[0].description}
@@ -91,7 +91,14 @@ function FavoriteCityTablet({
               </p>
             </div>
           </div>
-          <div></div>
+          <div className="text-right ml-auto">
+            <p className="text-xl font-bold">
+              {Math.round(weather.main.temp)}°
+            </p>
+            <p className="text-xs capitalize text-muted-foreground">
+              {weather.weather[0].description}
+            </p>
+          </div>
         </>
       ) : null}
     </div>
