@@ -1,7 +1,7 @@
 import type { WeatherData } from "@/api/types";
 import { format } from "date-fns";
 import { Compass, Gauge, Sunrise, Sunset } from "lucide-react";
-import { Card, CardContent, CardTitle } from "./ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 interface weatherDetailsProps {
   data: WeatherData;
@@ -46,7 +46,9 @@ const WeatherDetails = ({ data }: weatherDetailsProps) => {
 
   return (
     <Card>
-      <CardTitle>Weather Details</CardTitle>
+      <CardHeader>
+        <CardTitle>Weather Details</CardTitle>
+      </CardHeader>
 
       <CardContent>
         <div className="grid gap-6 sm:grid-cols-2">
