@@ -2,7 +2,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster } from "sonner";
-import Layout from "./components/layout";
+
+import Layout from "./components/Layout";
 import { ThemeProvider } from "./context/theme-provider";
 import CityPage from "./pages/city-page";
 import WeatherDashboard from "./pages/weather-dashboard";

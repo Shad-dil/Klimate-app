@@ -21,10 +21,10 @@ const WeatherDashboard = () => {
     getLocation,
     isLoading: locationLoading,
   } = useGeoLocation();
-
-  const weatherQuery = useWeatherQuery(coordinates);
-  const forecastQuery = useForecastQuery(coordinates);
-  const locationQuery = useReverseGeoQuery(coordinates);
+  const validCoordinates = coordinates ?? { lat: 0, lon: 0 };
+  const weatherQuery = useWeatherQuery(validCoordinates);
+  const forecastQuery = useForecastQuery(validCoordinates);
+  const locationQuery = useReverseGeoQuery(validCoordinates);
 
   const handleRefresh = () => {
     getLocation();
