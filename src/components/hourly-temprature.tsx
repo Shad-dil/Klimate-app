@@ -1,43 +1,55 @@
-import { ForecastData } from "@/api/types";
-import { format } from "date-fns/fp";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import {
-  Line,
   LineChart,
-  ResponsiveContainer,
-  Tooltip,
+  Line,
   XAxis,
   YAxis,
+  Tooltip,
+  ResponsiveContainer,
 } from "recharts";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-interface HourlyTempratureProps {
+import { format } from "date-fns";
+import type { ForecastData } from "@/api/types";
+
+interface HourlyTemperatureProps {
   data: ForecastData;
 }
 
-const HourlyTemprature = ({ data }: HourlyTempratureProps) => {
-  const chartData = data.list.slice(0, 8).map((item) => ({
-    time: format("ha", new Date(item.dt * 1000)),
-    temp: Math.round(item.main.temp),
-    feels_like: Math.round(item.main.feels_like),
-  }));
+interface ChartData {
+  time: string;
+  temp: number;
+  feels_like: number;
+}
+
+export function HourlyTemperature({ data }: HourlyTemperatureProps) {
+  // Get today's forecast data and format for chart
+
+  const chartData: ChartData[] = data.list
+    .slice(0, 8) // Get next 24 hours (3-hour intervals)
+    .map((item) => ({
+      time: format(new Date(item.dt * 1000), "ha"),
+      temp: Math.round(item.main.temp),
+      feels_like: Math.round(item.main.feels_like),
+    }));
+
   return (
     <Card className="flex-1">
       <CardHeader>
-        <CardTitle>Today's Temprature</CardTitle>
+        <CardTitle>Today's Temperature</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="h-[200px] w-full">
-          <ResponsiveContainer width={"100%"} height={"100%"}>
+          <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData}>
               <XAxis
                 dataKey="time"
                 stroke="#888888"
-                fontSize="12"
+                fontSize={12}
                 tickLine={false}
                 axisLine={false}
               />
               <YAxis
                 stroke="#888888"
-                fontSize="12"
+                fontSize={12}
                 tickLine={false}
                 axisLine={false}
                 tickFormatter={(value) => `${value}°`}
@@ -50,7 +62,7 @@ const HourlyTemprature = ({ data }: HourlyTempratureProps) => {
                         <div className="grid grid-cols-2 gap-2">
                           <div className="flex flex-col">
                             <span className="text-[0.70rem] uppercase text-muted-foreground">
-                              Temprature
+                              Temperature
                             </span>
                             <span className="font-bold">
                               {payload[0].value}°
@@ -92,6 +104,4 @@ const HourlyTemprature = ({ data }: HourlyTempratureProps) => {
       </CardContent>
     </Card>
   );
-};
-
-export default HourlyTemprature;
+}

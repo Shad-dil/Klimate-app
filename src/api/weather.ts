@@ -1,9 +1,9 @@
 import { API_CONFIG } from "./config";
-import {
-  Coordinates,
-  ForecastData,
-  GeocodeResponse,
+import type {
   WeatherData,
+  ForecastData,
+  GeocodingResponse,
+  Coordinates,
 } from "./types";
 
 class WeatherAPI {
@@ -12,49 +12,55 @@ class WeatherAPI {
       appid: API_CONFIG.API_KEY,
       ...params,
     });
-
     return `${endpoint}?${searchParams.toString()}`;
   }
 
-  private async fethData<T>(url: string): Promise<T> {
+  private async fetchData<T>(url: string): Promise<T> {
     const response = await fetch(url);
-    if (!response.ok)
-      throw new Error(`Weather API Error ${response.statusText}`);
+
+    if (!response.ok) {
+      throw new Error(`Weather API Error: ${response.statusText}`);
+    }
 
     return response.json();
   }
+
   async getCurrentWeather({ lat, lon }: Coordinates): Promise<WeatherData> {
     const url = this.createUrl(`${API_CONFIG.BASE_URL}/weather`, {
       lat: lat.toString(),
       lon: lon.toString(),
-      units: API_CONFIG.DEFAULT_PARAMS.units,
+      units: "metric",
     });
-    return this.fethData<WeatherData>(url);
+    return this.fetchData<WeatherData>(url);
   }
 
   async getForecast({ lat, lon }: Coordinates): Promise<ForecastData> {
     const url = this.createUrl(`${API_CONFIG.BASE_URL}/forecast`, {
       lat: lat.toString(),
       lon: lon.toString(),
-      units: API_CONFIG.DEFAULT_PARAMS.units,
+      units: "metric",
     });
-    return this.fethData<ForecastData>(url);
+    return this.fetchData<ForecastData>(url);
   }
 
-  async reverseGeocode({ lat, lon }: Coordinates): Promise<GeocodeResponse[]> {
+  async reverseGeocode({
+    lat,
+    lon,
+  }: Coordinates): Promise<GeocodingResponse[]> {
     const url = this.createUrl(`${API_CONFIG.GEO}/reverse`, {
       lat: lat.toString(),
       lon: lon.toString(),
-      units: API_CONFIG.DEFAULT_PARAMS.units,
+      limit: "1",
     });
-    return this.fethData<GeocodeResponse[]>(url);
+    return this.fetchData<GeocodingResponse[]>(url);
   }
-  async searchLocation(query: string): Promise<GeocodeResponse[]> {
+
+  async searchLocations(query: string): Promise<GeocodingResponse[]> {
     const url = this.createUrl(`${API_CONFIG.GEO}/direct`, {
       q: query,
       limit: "5",
     });
-    return this.fethData<GeocodeResponse[]>(url);
+    return this.fetchData<GeocodingResponse[]>(url);
   }
 }
 
